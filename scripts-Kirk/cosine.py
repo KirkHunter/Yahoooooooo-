@@ -9,9 +9,6 @@ import matplotlib.pyplot as plt
 
 sc = SparkContext()
 
-AWS_ACCESS_KEY_ID = "AKIAI2RULIS6VKBC2A4A"
-AWS_SECRET_ACCESS_KEY = "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"
-
 sc._jsc.hadoopConfiguration().set("fs.s3n.awsAccessKeyId", AWS_ACCESS_KEY_ID)
 sc._jsc.hadoopConfiguration().set("fs.s3n.awsSecretAccessKey", AWS_SECRET_ACCESS_KEY)
 
