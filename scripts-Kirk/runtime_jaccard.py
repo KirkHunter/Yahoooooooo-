@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
     txt_files = ['s3n://sparkstuff/train_0_sub_' + str(n) + 'mil.txt' for n in range(1, 11)]
 
-
+    
     train_file1mil  = train_file(txt_files[0], 1)
     train_file2mil  = train_file(txt_files[1], 2)
     train_file3mil  = train_file(txt_files[2], 3)
@@ -52,6 +52,16 @@ if __name__ == '__main__':
 
 
     # get combinations
+    print "\n\nCreating song count dictionaries ... \n\n"
+
+    for train_file in train_files:
+        train_file.get_songs()
+        train_file.create_songs_map()
+
+
+
+
+    # get user counts
     print "\n\nGrouping by users ... \n\n"
 
     for train_file in train_files:
@@ -59,9 +69,9 @@ if __name__ == '__main__':
 
 
 
+
     # isntantiate values dictionary
     vals = defaultdict(dict)
-
 
     print "\n\nGetting user counts per file ... \n\n"
 
@@ -71,8 +81,10 @@ if __name__ == '__main__':
 
 
 
+
+
     ###############################################################################
-    # Computing cosine similarities
+    # # Computing Jaccard similarities
     
     for train_file in train_files:
 
@@ -82,11 +94,12 @@ if __name__ == '__main__':
 
     
 
-
     print "\n\nComputing similarities ... \n\n"
 
     for train_file in train_files:
-        train_file.compute_cosine_similarities()
+        train_file.create_songs_map()
+        train_file.compute_jaccard_similarities(train_file.songs_dict)
+
 
 
 
@@ -95,7 +108,7 @@ if __name__ == '__main__':
 
         print "\n\nCollecting %dmil dictionary ... \n\n" % (train_file.n)
 
-        train_file.print_iteration_time(vals, sim='cosine')
+        train_file.print_iteration_time(vals, sim='jaccard')
 
         print "\n\n"
         for kv in sorted(vals.iteritems()):
@@ -103,9 +116,10 @@ if __name__ == '__main__':
         print "\n\n"
 
 
+    
+
     ###########################################################################
     # plot the results
-
 
     users, runtime = [], []
     for k, v in sorted(vals.iteritems()):
@@ -117,7 +131,7 @@ if __name__ == '__main__':
     plt.title('Runtime Increase for Growing User Base', size="x-large")
     plt.xlabel('$N-$ users (thousands)', labelpad=5, size="large")
     plt.ylabel('time (seconds)', labelpad=55, size="large", rotation=0)
-    plt.savefig('runtime_mil.png')
+    plt.savefig('runtime_mil_jaccard.png')
 
 
 
