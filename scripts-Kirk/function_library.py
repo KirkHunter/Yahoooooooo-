@@ -8,7 +8,7 @@ import time
 
 
 
-class train_file(object):
+class TrainFile(object):
     def __init__(self, filename, n):
         self.filename = filename
         self.n = n

@@ -25,28 +25,28 @@ if __name__ == '__main__':
     txt_files = ['s3n://sparkstuff/train_0_sub_' + str(n) + 'k.txt' for n in range(100, 1000)]
     txt_files += ['s3n://sparkstuff/train_0_sub_1mil.txt']
 
-    train_file100  = train_file(txt_files[0], 100)
-    train_file200  = train_file(txt_files[1], 200)
-    train_file300  = train_file(txt_files[2], 300)
-    train_file400  = train_file(txt_files[3], 400)
-    train_file500  = train_file(txt_files[4], 500)
-    train_file600  = train_file(txt_files[5], 600)
-    train_file700  = train_file(txt_files[6], 700)
-    train_file800  = train_file(txt_files[7], 800)
-    train_file900  = train_file(txt_files[8], 900)
-    train_file1mil = train_file(txt_files[9], 1000)
+    TrainFile100  = TrainFile(txt_files[0], 100)
+    TrainFile200  = TrainFile(txt_files[1], 200)
+    TrainFile300  = TrainFile(txt_files[2], 300)
+    TrainFile400  = TrainFile(txt_files[3], 400)
+    TrainFile500  = TrainFile(txt_files[4], 500)
+    TrainFile600  = TrainFile(txt_files[5], 600)
+    TrainFile700  = TrainFile(txt_files[6], 700)
+    TrainFile800  = TrainFile(txt_files[7], 800)
+    TrainFile900  = TrainFile(txt_files[8], 900)
+    TrainFile1mil = TrainFile(txt_files[9], 1000)
 
-    train_files = [train_file100, train_file200, train_file300, train_file400,
-      train_file500, train_file600, train_file700, train_file800, 
-      train_file900, train_file1mil
+    TrainFiles = [TrainFile100, TrainFile200, TrainFile300, TrainFile400,
+      TrainFile500, TrainFile600, TrainFile700, TrainFile800, 
+      TrainFile900, TrainFile1mil
     ]
 
 
     print "\n\nParsing files ... \n\n"
 
-    for train_file in train_files:
-        train_file.read_lines()
-        train_file.parse_train_lines()
+    for TrainFile in TrainFiles:
+        TrainFile.read_lines()
+        TrainFile.parse_train_lines()
 
 
 
@@ -54,8 +54,8 @@ if __name__ == '__main__':
     # get combinations
     print "\n\nGrouping by users ... \n\n"
 
-    for train_file in train_files:
-        train_file.get_users()
+    for TrainFile in TrainFiles:
+        TrainFile.get_users()
 
 
 
@@ -65,8 +65,8 @@ if __name__ == '__main__':
 
     print "\n\nGetting user counts per file ... \n\n"
 
-    for train_file in train_files:
-        vals[train_file.n]["users"] = train_file.get_users_count()
+    for TrainFile in TrainFiles:
+        vals[TrainFile.n]["users"] = TrainFile.get_users_count()
 
 
 
@@ -74,33 +74,33 @@ if __name__ == '__main__':
     ###############################################################################
     # Computing cosine similarities
     
-    for train_file in train_files:
-        if train_file.n < 1000:
-            print "\n\nGetting item combinations %dk rows... \n\n" % (train_file.n)
+    for TrainFile in TrainFiles:
+        if TrainFile.n < 1000:
+            print "\n\nGetting item combinations %dk rows... \n\n" % (TrainFile.n)
         else:
             print "\n\nGetting item combinations 1mil rows... \n\n"
 
-        train_file.item_combos()       
+        TrainFile.item_combos()       
 
     
 
 
     print "\n\nComputing similarities ... \n\n"
 
-    for train_file in train_files:
-        train_file.compute_cosine_similarities()
+    for TrainFile in TrainFiles:
+        TrainFile.compute_cosine_similarities()
 
 
 
 
-    for train_file in train_files:
+    for TrainFile in TrainFiles:
 
-        if train_file.n < 1000:
-            print "\n\nCollecting %dk dictionary ... \n\n" % (train_file.n)
+        if TrainFile.n < 1000:
+            print "\n\nCollecting %dk dictionary ... \n\n" % (TrainFile.n)
         else:
             print "\n\nCollecting 1mil dictionary ... \n\n"
 
-        train_file.print_iteration_time(vals, sim='cosine')
+        TrainFile.print_iteration_time(vals, sim='cosine')
 
         print "\n\n"
         for kv in sorted(vals.iteritems()):

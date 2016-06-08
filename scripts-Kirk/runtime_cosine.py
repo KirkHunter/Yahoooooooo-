@@ -25,28 +25,28 @@ if __name__ == '__main__':
     txt_files = ['s3n://sparkstuff/train_0_sub_' + str(n) + 'mil.txt' for n in range(1, 11)]
 
 
-    train_file1mil  = train_file(txt_files[0], 1)
-    train_file2mil  = train_file(txt_files[1], 2)
-    train_file3mil  = train_file(txt_files[2], 3)
-    train_file4mil  = train_file(txt_files[3], 4)
-    train_file5mil  = train_file(txt_files[4], 5)
-    train_file6mil  = train_file(txt_files[5], 6)
-    train_file7mil  = train_file(txt_files[6], 7)
-    train_file8mil  = train_file(txt_files[7], 8)
-    train_file9mil  = train_file(txt_files[8], 9)
-    train_file10mil = train_file(txt_files[9], 10)
+    TrainFile1mil  = TrainFile(txt_files[0], 1)
+    TrainFile2mil  = TrainFile(txt_files[1], 2)
+    TrainFile3mil  = TrainFile(txt_files[2], 3)
+    TrainFile4mil  = TrainFile(txt_files[3], 4)
+    TrainFile5mil  = TrainFile(txt_files[4], 5)
+    TrainFile6mil  = TrainFile(txt_files[5], 6)
+    TrainFile7mil  = TrainFile(txt_files[6], 7)
+    TrainFile8mil  = TrainFile(txt_files[7], 8)
+    TrainFile9mil  = TrainFile(txt_files[8], 9)
+    TrainFile10mil = TrainFile(txt_files[9], 10)
 
-    train_files = [train_file1mil, train_file2mil, train_file3mil, train_file4mil,
-      train_file5mil, train_file6mil, train_file7mil, train_file8mil, 
-      train_file9mil, train_file10mil
+    TrainFiles = [TrainFile1mil, TrainFile2mil, TrainFile3mil, TrainFile4mil,
+      TrainFile5mil, TrainFile6mil, TrainFile7mil, TrainFile8mil, 
+      TrainFile9mil, TrainFile10mil
     ]
 
 
     print "\n\nParsing files ... \n\n"
 
-    for train_file in train_files:
-        train_file.read_lines()
-        train_file.parse_train_lines()
+    for TrainFile in TrainFiles:
+        TrainFile.read_lines()
+        TrainFile.parse_train_lines()
 
 
 
@@ -54,8 +54,8 @@ if __name__ == '__main__':
     # get combinations
     print "\n\nGrouping by users ... \n\n"
 
-    for train_file in train_files:
-        train_file.get_users()
+    for TrainFile in TrainFiles:
+        TrainFile.get_users()
 
 
 
@@ -65,8 +65,8 @@ if __name__ == '__main__':
 
     print "\n\nGetting user counts per file ... \n\n"
 
-    for train_file in train_files:
-        vals[train_file.n]["users"] = train_file.get_users_count()
+    for TrainFile in TrainFiles:
+        vals[TrainFile.n]["users"] = TrainFile.get_users_count()
 
 
 
@@ -74,28 +74,28 @@ if __name__ == '__main__':
     ###############################################################################
     # Computing cosine similarities
     
-    for train_file in train_files:
+    for TrainFile in TrainFiles:
 
-        print "\n\nGetting item combinations %dmil rows... \n\n" % (train_file.n)
+        print "\n\nGetting item combinations %dmil rows... \n\n" % (TrainFile.n)
 
-        train_file.item_combos()       
+        TrainFile.item_combos()       
 
     
 
 
     print "\n\nComputing similarities ... \n\n"
 
-    for train_file in train_files:
-        train_file.compute_cosine_similarities()
+    for TrainFile in TrainFiles:
+        TrainFile.compute_cosine_similarities()
 
 
 
 
-    for train_file in train_files:
+    for TrainFile in TrainFiles:
 
-        print "\n\nCollecting %dmil dictionary ... \n\n" % (train_file.n)
+        print "\n\nCollecting %dmil dictionary ... \n\n" % (TrainFile.n)
 
-        train_file.print_iteration_time(vals, sim='cosine')
+        TrainFile.print_iteration_time(vals, sim='cosine')
 
         print "\n\n"
         for kv in sorted(vals.iteritems()):
